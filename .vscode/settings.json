@@ -2,5 +2,9 @@
     "python.analysis.extraPaths": [
         "./src",
         "./src"
+    ],
+    "cursorpyright.analysis.extraPaths": [
+        "./src",
+        "./src"
     ]
 }
