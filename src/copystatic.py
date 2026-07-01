@@ -18,24 +18,22 @@ def copy_fresh_contents(src, dst):
 
 def remove_contents(path):
     inner_paths = os.listdir(path)
-    if len(inner_paths) == 0:
-        return
-    for path in inner_paths:
-        if os.path.isfile(path):
-            os.remove(path)
+    for inner_path in inner_paths:
+        full_path_name = os.path.join(path, inner_path)
+        if os.path.isfile(full_path_name):
+            os.remove(full_path_name)
         else:
-            remove_contents(path)
-            os.rmdir(path)
-
+            remove_contents(full_path_name)
+            os.rmdir(full_path_name)
+            
 
 def copy_contents(src, dst):
     inner_paths = os.listdir(src)
-    if len(inner_paths) == 0:
-        return 
-    
-    # need to get the extension post the src to be able to put into dst
-    
-
-    for path in inner_paths:
-        if os.path.isfile(path):
-            shutil.copy(path, dst)
+    for inner_path in inner_paths:
+        full_path_name = os.path.join(src, inner_path)
+        destination_path = os.path.join(dst, inner_path)
+        if os.path.isfile(full_path_name):
+            shutil.copy(full_path_name, destination_path)
+        else:
+            os.mkdir(destination_path)
+            copy_contents(full_path_name, destination_path)

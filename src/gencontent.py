@@ -1,0 +1,35 @@
+from markdown_blocks import markdown_to_html_node
+import os
+
+
+def extract_title(markdown):
+    lines = markdown.split("\n")
+    for line in lines:
+        line = line.strip()
+        if line.startswith("# "):
+            return line[2:]
+    raise Exception("no h1 header found")
+
+
+def generate_page(from_path, template_path, dest_path):
+    print(f"Generating page from {from_path} to {dest_path} using {template_path}")
+    with open(from_path) as f:
+        user_markdown = f.read()
+    with open(template_path) as f:
+        user_template = f.read()
+    
+    user_html = markdown_to_html_node(user_markdown).to_html()
+    user_title = extract_title(user_markdown)
+    user_template = user_template.replace("{{ Title }}", user_title)
+    user_template = user_template.replace("{{ Content }}", user_html)
+
+    dest_dir_path = os.path.dirname(dest_path)
+    if dest_dir_path != "" and not os.path.exists(dest_dir_path):
+        os.makedirs(dest_dir_path)
+
+    with open(dest_path, "w") as f:
+        f.write(user_template)
+
+
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    []
