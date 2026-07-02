@@ -32,4 +32,15 @@ def generate_page(from_path, template_path, dest_path):
 
 
 def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
-    []
+    inner_paths = os.listdir(dir_path_content)
+    for path in inner_paths:
+        combined_path = os.path.join(dir_path_content, path)
+        if os.path.isfile(combined_path):
+            if path.endswith(".md"):
+                destination_path = os.path.join(dest_dir_path, path.replace(".md", ".html"))
+                generate_page(combined_path, template_path, destination_path)
+        else:
+            destination_path = os.path.join(dest_dir_path, path)
+            generate_pages_recursive(combined_path, template_path, destination_path)
+
+
